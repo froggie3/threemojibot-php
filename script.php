@@ -20,7 +20,7 @@ class threemoji
 		}
 	}
 	
-	public function generate_word(array $a, int $b) : string 
+	public function generate_word(array $a, int $b): ?string 
 	{
 		$i = 0; 
 		#echo var_dump($i);
@@ -52,9 +52,30 @@ class threemoji
 		}
 		$out_buffer_chunk = [];	 // バッファを破棄
 	}
+
+	public function post(): ?string
+	{
+		#echo var_dump ( $instance-> generate_word($instance->CHAR_ARRAY, $instance->CHAR_COUNT) );
+		
+		$message = array( 
+			'content' => $this->generate_word($this->CHAR_ARRAY, $this->CHAR_COUNT),
+		);
+
+		include __DIR__ . '/webhook.php';
+		
+		if (file_exists($configFile))
+		{
+			send_to_discord($message, getWebhookURL($configFile));
+			return null;
+		}
+		else
+		{
+			#print($configFile . 'not found');
+			#touch('./config/webhook_url.txt');
+			return null;
+		}	
+	}	
 }
 
-$instance = new threemoji;
-#echo var_dump ( $instance-> generate_word($instance->CHAR_ARRAY, $instance->CHAR_COUNT) );
-echo $instance-> generate_word($instance->CHAR_ARRAY, $instance->CHAR_COUNT);
-
+$instance = new threemoji; 
+$instance->post();

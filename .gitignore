@@ -1,2 +1,3 @@
-config/
-README.md
+assets/
+config/webhook_url.txt
+script-old*
