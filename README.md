@@ -51,7 +51,7 @@ cp webhook_url.bak.txt webhook_url.txt
 4.  Write your Webhook URL
 
 ```bash
-echo "https://example.com/path/to" > webhook_url.txt
+vim webhook_url.txt
 ```
 
 5.  Configure your cronjob or systemd so `script.php` regularly runs
