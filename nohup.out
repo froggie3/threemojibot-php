@@ -1,0 +1,16 @@
+
+(gitg:288128): Gtk-WARNING **: 19:44:10.996: Theme parsing error: gtk.css:7:17: not a number
+
+(gitg:288459): Gtk-WARNING **: 19:45:13.930: Theme parsing error: gtk.css:7:17: not a number
+
+** (gitg:288459): WARNING **: 19:45:38.353: Error loading plugin: libaspell.so.15: 共有オブジェクトファイルを開けません: そのようなファイルやディレクトリはありません
+
+
+** (gitg:288459): WARNING **: 19:45:38.354: Error loading plugin: libhspell.so.0: 共有オブジェクトファイルを開けません: そのようなファイルやディレクトリはありません
+
+
+** (gitg:288459): WARNING **: 19:45:38.361: Error loading plugin: libnuspell.so.5: 共有オブジェクトファイルを開けません: そのようなファイルやディレクトリはありません
+
+
+** (gitg:288459): WARNING **: 19:45:38.362: Error loading plugin: libvoikko.so.1: 共有オブジェクトファイルを開けません: そのようなファイルやディレクトリはありません
+
