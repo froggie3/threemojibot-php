@@ -1,5 +1,4 @@
 assets/
 config/webhook_url.txt
-./script-old.php
-./nohup*
-gitignore
+script-ol*
+nohup*
