@@ -1,5 +1,4 @@
 <?php
-
 $configFile = __DIR__ . '/config/webhook_url.txt';
 
 function getWebhookURL($arg)
@@ -36,4 +35,3 @@ function send_to_discord($arg1, $arg2)
 	fpassthru($fp);
 	fclose($fp);
 }
-
