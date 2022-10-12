@@ -13,7 +13,7 @@ This project is made as a PHP fork for [ひらがな3文字を毎分ランダム
 -   `./webhook.php`
     -   It is one of the components for this program to push a generated word to Webhook, otherwise whole the program will not work properly.
 -   `./script.php`
-    -   The core file to be executed
+    -   The core file to be executed.
 
 ## Requisites
 

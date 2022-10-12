@@ -1,4 +1,5 @@
 assets/
 config/webhook_url.txt
-script-ol*
+old.script*
 nohup*
+.vscode/
