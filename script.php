@@ -17,7 +17,8 @@ class threemoji
         $i = 0;
 
         do {
-            $out_buffer_chunk[] = $a[rand(0, $b - 1)]; // 配列の中から1つえらんでバッファに格納
+            // 配列の中から1つえらんでバッファに格納
+            $out_buffer_chunk[] = $a[rand(0, $b - 1)]; 
             $i++;
         } while ($i < 3);
 
@@ -93,7 +94,7 @@ class valid_check
 $options = getopt('p::t::w::a::');
 
 
-function gen_word()
+function gen_word() : string
 {
     $threemoji = new threemoji();
     $check = new valid_check();
@@ -153,7 +154,7 @@ if (empty($options)) {
         return $cfgperse->format();
     }
 
-    function post_discord($msg): int
+    function post_discord(string $msg): int
     {
         // initialize external webhook class
         $webhook = new webhook;
