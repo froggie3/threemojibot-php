@@ -1,37 +1,58 @@
 <?php
-$configFile = __DIR__ . '/config/webhook_url.txt';
 
-function getWebhookURL($arg)
+declare(strict_types=1);
+
+class cfgperser
 {
-	/* $arg = path for config file,
-	 * $o = output
-	 */
+	public $configFile;
+	public function iscfgvalid(): bool
+	{
+		$bool = (file_exists($this->configFile)) ? true : false;
+		return $bool;
+	}
 
-	// opens config file
-	$f = file($arg, 0);
-	$o = str_replace(PHP_EOL, '', array_pop($f));
+	public function format(): string
+	{
+		// opens config file and eliminates unwanted spaces 
+		if ($this->iscfgvalid() === true) {
 
-	#var_dump($URL);
-	return $o;
+			// $configFile = path for config file,
+			$f = file($this->configFile, 0);
+
+			// output
+			$o = str_replace(PHP_EOL, '', array_pop($f));
+			return $o;
+		} else {
+			// output error message
+			$msg = $this->configFile . 'not found';
+			error_log($msg);
+			exit(1);
+		}
+	}
 }
 
-function send_to_discord($arg1, $arg2)
+class webhook
 {
-	/* $arg1 = message contents,
-	 * $arg2 = URL for Webhook
-	 */
+	public $url = "";
+	public $msg = [];
+	function send_to_discord()
+	{
+		/* $arg1 = message contents,
+		 * $this->url = URL for Webhook
+		 */
 
-	// options as a context stream
-	$options = array(
-		'http' => array(
-			'method' => 'POST',
-			'header' => 'Content-Type: application/json',
-			'content' => json_encode($arg1),
-		)
-	);
-	$context = stream_context_create($options);
-	$fp = fopen($arg2, 'r', false, $context);
+		// options as a context stream
+		$options = array(
+			'http' => array(
+				'method' => 'POST',
+				'header' => 'Content-Type: application/json',
+				'content' => json_encode($this->msg),
+			)
+		);
+		$context = stream_context_create($options);
+		$fp = fopen($this->url, 'r', false, $context);
 
-	fpassthru($fp);
-	fclose($fp);
+		fpassthru($fp);
+		fclose($fp);
+	}
 }
