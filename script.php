@@ -10,7 +10,7 @@ class threemoji
     public const CHAR_ARRAY = [];
     public const CHAR_COUNT = 0;
 
-    public function generate_word(array $a, int $b): ?string
+    public function generate_word(array $a, int $b): string
     {
         $words_merged = "";
         $out_buffer_chunk = [];
@@ -18,15 +18,16 @@ class threemoji
 
         do {
             // 配列の中から1つえらんでバッファに格納
-            $out_buffer_chunk[] = $a[rand(0, $b - 1)]; 
+            $out_buffer_chunk[] = $a[rand(0, $b - 1)];
             $i++;
         } while ($i < 3);
 
         // 配列のキーの総数が一定以上に達したら文字列に結合
         $words_merged = implode($out_buffer_chunk);
 
+        // バッファを破棄
+        $out_buffer_chunk = [];
         return $words_merged;
-        $out_buffer_chunk = []; // バッファを破棄
     }
 }
 
@@ -94,7 +95,7 @@ class valid_check
 $options = getopt('p::t::w::a::');
 
 
-function gen_word() : string
+function gen_word(): string
 {
     $threemoji = new threemoji();
     $check = new valid_check();
@@ -134,7 +135,7 @@ function gen_word() : string
         if ($validity === true) {
             break;
         }
-        
+
         # どんな感じで再生成されているのか見たいときは下のフラグをオフに
         # else { echo $generated . "→"; }
     } while ($validity === false);
@@ -144,7 +145,7 @@ function gen_word() : string
 
 
 // posts generated words
-if (empty($options)) {
+if (empty($options) === true) {
 
     function load_url_from_cfg(): string
     {
@@ -154,7 +155,7 @@ if (empty($options)) {
         return $cfgperse->format();
     }
 
-    function post_discord(string $msg): int
+    function post_discord(string $msg): void
     {
         // initialize external webhook class
         $webhook = new webhook;
@@ -162,8 +163,7 @@ if (empty($options)) {
         $webhook->msg = ['content' => $msg];
         $webhook->send_to_discord();
 
-        #var_dump ( $webhook->url, $webhook->msg  );
-        return 0;
+        #var_dump ( $webhook->url, $webhook->msg );
     }
 
     for ($i = 0; $i < 2; $i++) {
@@ -174,7 +174,7 @@ if (empty($options)) {
 }
 
 // option to output the generated word into stdout
-if (isset($options['w'])) {
+if (isset($options['w']) === true) {
     for ($i = 0; $i < 2; $i++) {
         $generated = gen_word();
         echo $generated . PHP_EOL;

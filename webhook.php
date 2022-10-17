@@ -11,9 +11,9 @@ class cfgperser
         return $bool;
     }
 
-    public function format(): string
+    public function format(): ?string
     {
-        // opens config file and eliminates unwanted spaces 
+        // opens config file and eliminates unwanted spaces
         if ($this->iscfgvalid() === true) {
 
             // $configFile = path for config file,
@@ -27,6 +27,7 @@ class cfgperser
             $msg = $this->configFile . 'not found';
             error_log($msg);
             exit(1);
+            return null;
         }
     }
 }
@@ -35,16 +36,16 @@ class webhook
 {
     public $url = "";
     public $msg = [];
-    function send_to_discord()
+    public function send_to_discord(): void
     {
         // options as a context stream
-        $options = array(
-            'http' => array(
+        $options = [
+            'http' => [
                 'method' => 'POST',
                 'header' => 'Content-Type: application/json',
                 'content' => json_encode($this->msg),
-            )
-        );
+            ],
+        ];
         $context = stream_context_create($options);
         $fp = fopen($this->url, 'r', false, $context);
 
