@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 ini_set('max_execution_time', 1200);
-require_once __DIR__ . '/webhook.php';
 
 class threemoji
 {
@@ -92,6 +91,58 @@ class valid_check
     }
 }
 
+class cfgperser
+{
+    public $configFile;
+    public function iscfgvalid(): bool
+    {
+        $bool = (file_exists($this->configFile)) ? true : false;
+        return $bool;
+    }
+
+    public function format(): ?string
+    {
+        // opens config file and eliminates unwanted spaces
+        if ($this->iscfgvalid() === true) {
+
+            // $configFile = path for config file,
+            $f = file($this->configFile, 0);
+
+            // output
+            $o = str_replace(PHP_EOL, '', array_pop($f));
+            return $o;
+        } else {
+            // output error message
+            $msg = $this->configFile . 'not found';
+            error_log($msg);
+            exit(1);
+            return null;
+        }
+    }
+}
+
+class webhook
+{
+    public $url = "";
+    public $msg = [];
+    public function send_to_discord(): void
+    {
+        // options as a context stream
+        $options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-Type: application/json',
+                'content' => json_encode($this->msg),
+            ],
+        ];
+        $context = stream_context_create($options);
+        $fp = fopen($this->url, 'r', false, $context);
+
+        fpassthru($fp);
+        fclose($fp);
+    }
+}
+
 $options = getopt('p::t::w::a::');
 
 
@@ -146,24 +197,24 @@ function gen_word(): string
 // posts generated words
 if (empty($options) === true) {
     $generated = gen_word();
-    function call_template(string $var, bool $echo = true)
-    {
-        $path = __DIR__ . '/inc/' . $var;
-        $bool = file_exists($path);
-        if ($bool === true) {
-            $file = file($path);
-            for ($i = 0; $i < count($file); $i += 1) {
-                echo $file[$i];
-            }
-        } else {
-            return 'file not found';
-        }
-    }
-    call_template('header.inc', true);
-    echo '<p>' . $generated .  '</p>' . PHP_EOL;
-    call_template('footer.inc', true);
+    echo <<<EOM
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/jpeg" href="./assets/icon.jpg">
+        <title>ひらがな3文字</title>
+    </head>
+    <body>
+    EOM . PHP_EOL;
+    echo '    <p>' . $generated .  '</p>' . PHP_EOL;
+    
+    echo <<<EOM
+    </body>
+    </html>
+    EOM . PHP_EOL;
 }
-
 
 // posts generated words
 if (isset($options['p']) === true) {

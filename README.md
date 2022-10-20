@@ -10,8 +10,6 @@ This project is made as a PHP fork for [ひらがな3文字を毎分ランダム
 
 -   `./config/webhook_url.txt`
     -   To paste the Discord Webhook URL here directly allows the program to find where to send the content. `webhook.php` requires this file.
--   `./webhook.php`
-    -   It is one of the components for this program to push a generated word to Webhook, otherwise whole the program will not work properly.
 -   `./script.php`
     -   The core file to be executed.
 
