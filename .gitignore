@@ -3,3 +3,4 @@ config/webhook_url.txt
 old.script*
 nohup*
 .vscode/
+index.php

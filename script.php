@@ -18,7 +18,7 @@ class threemoji
 
         do {
             // 配列の中から1つえらんでバッファに格納
-            $out_buffer_chunk[] = $a[rand(0, $b - 1)];
+            $out_buffer_chunk[] = $a[mt_rand(0, $b - 1)];
             $i++;
         } while ($i < 3);
 
@@ -143,9 +143,30 @@ function gen_word(): string
     return $generated;
 }
 
-
 // posts generated words
 if (empty($options) === true) {
+    $generated = gen_word();
+    function call_template(string $var, bool $echo = true)
+    {
+        $path = __DIR__ . '/inc/' . $var;
+        $bool = file_exists($path);
+        if ($bool === true) {
+            $file = file($path);
+            for ($i = 0; $i < count($file); $i += 1) {
+                echo $file[$i];
+            }
+        } else {
+            return 'file not found';
+        }
+    }
+    call_template('header.inc', true);
+    echo '<p>' . $generated .  '</p>' . PHP_EOL;
+    call_template('footer.inc', true);
+}
+
+
+// posts generated words
+if (isset($options['p']) === true) {
 
     function load_url_from_cfg(): string
     {

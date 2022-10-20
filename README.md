@@ -27,6 +27,13 @@ Copyright (c) The PHP Group
 Zend Engine v4.1.10, Copyright (c) Zend Technologies
 ```
 
+## Options 
+
+With no option, the script shows the generated word with HTML-encoded so that your web browser can understand.
+
+-   `-w` shows the generated characters on your terminal (expected for testing this script).
+-   `-p` posts the generated characters on a specific Discord channel that you specifies in `./config/webhook_url.txt`.
+
 ## Usage
 
 1.  Clone this repository
