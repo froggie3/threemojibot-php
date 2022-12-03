@@ -31,6 +31,18 @@ With no option, the script shows the generated word with HTML-encoded so that yo
 
 -   `-w` shows the generated characters on your terminal (expected for testing this script).
 -   `-p` posts the generated characters on a specific Discord channel that you specifies in `./config/webhook_url.txt`.
+-   `-r` specifies how many times generation is iterated.
+
+Example:
+```
+> php .\script.php -w -r 6
+ふめぅ
+ごっで
+だざげ
+まがわ
+ししん
+ぬびむ
+```
 
 ## Usage
 

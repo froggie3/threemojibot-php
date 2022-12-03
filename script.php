@@ -48,7 +48,8 @@ class valid_check
             $pos = mb_strpos($gen, $var);
 
             // (int) $pos のとき
-            if ($pos !== false and ($pos === 0 or $pos === 2)) {
+            if ($pos !== false and ($pos === 0)) {
+                $var = "";
                 return false;
             }
         }
@@ -143,8 +144,9 @@ class webhook
     }
 }
 
-$options = getopt('p::t::w::a::');
-
+$options = getopt('pt:wi:n:', ['post', 'test:', 'write', 'iteration:', 'interval:']);
+$iteration = (isset($options['i']) === true) ? (int) $options['i'] : 1;
+$interval = (isset($options['n']) === true) ? (int) $options['n'] : 1;
 
 function gen_word(): string
 {
@@ -188,7 +190,7 @@ function gen_word(): string
         }
 
         # どんな感じで再生成されているのか見たいときは下のフラグをオフに
-        # else { echo $generated . "→"; }
+        # else { echo $generated . "->"; }
     } while ($validity === false);
 
     return $generated;
@@ -209,7 +211,7 @@ if (empty($options) === true) {
     <body>
     EOM . PHP_EOL;
     echo '    <p>' . $generated .  '</p>' . PHP_EOL;
-    
+
     echo <<<EOM
     </body>
     </html>
@@ -238,18 +240,28 @@ if (isset($options['p']) === true) {
         #var_dump ( $webhook->url, $webhook->msg );
     }
 
-    for ($i = 0; $i < 2; $i++) {
-        $generated = gen_word();
-        post_discord($generated);
-        sleep(600);
+    for ($i = 0; $i < $iteration; $i++) {
+        post_discord(gen_word());
+        if ($iteration >= 2) {
+            sleep($interval);
+        }
     }
 }
 
+// check if given string is valid
+if (isset($options['t']) === true) {
+    $check = new valid_check();
+    (string) $string = $options['t'];
+    $result = "$string: " . ($check->is_valid($string) === true) ? 'true' : 'false';
+    echo $result . PHP_EOL;
+}
+
 // option to output the generated word into stdout
-if (isset($options['w']) === true) {
-    for ($i = 0; $i < 2; $i++) {
-        $generated = gen_word();
-        echo $generated . PHP_EOL;
-        sleep(1);
+if (isset($options['w']) || isset($options['stdout']) === true) {
+    for ($i = 0; $i < $iteration; $i++) {
+        echo gen_word() . PHP_EOL;
+        if ($iteration >= 2) {
+            sleep($interval);
+        }
     }
 }
